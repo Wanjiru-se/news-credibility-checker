@@ -1,1 +1,78 @@
-pip freeze > backend\requirements.txt
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Credibility Report</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5 mb-5">
+
+    <div class="card shadow">
+
+        <div class="card-body p-5">
+
+            <h1 class="text-center fw-bold">
+                Credibility Report
+            </h1>
+
+            <p class="text-center text-muted mb-4">
+                Review the credibility score, extracted claims and supporting sources.
+            </p>
+
+            <hr>
+
+            <div class="text-center mb-5">
+
+                <h5>Overall Credibility Score</h5>
+
+                <h2
+                    id="credibilityScore"
+                    class="display-4 fw-bold">
+
+                    --%
+
+                </h2>
+
+            </div>
+
+            <h4 class="mb-3">
+                Extracted Claims
+            </h4>
+
+            <div id="claimsContainer"></div>
+
+            <div class="d-grid mt-4">
+
+                <a
+                    href="index.html"
+                    class="btn btn-outline-primary btn-lg">
+
+                    Analyze Another Article
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/result.js"></script>
+
+</body>
+
+</html>
