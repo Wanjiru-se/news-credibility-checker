@@ -14,6 +14,8 @@ class DatabaseConnection:
                     pool_size=5,
                     host=os.getenv("DB_HOST", "localhost"),
                     database=os.getenv("DB_NAME", "news_credibility_db"),
+                    port=3307,
+
                     user=os.getenv("DB_USER", "root"),
                     password=os.getenv("DB_PASSWORD", "")
                 )
