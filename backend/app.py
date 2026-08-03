@@ -1,55 +1,39 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from database.repository import ReportRepository
+from database.models import VerificationReport
 
 app = Flask(__name__)
-CORS(app)
 
+repo = ReportRepository()
+repo.create_table_if_not_exists()
 
-@app.route("/")
+@app.route('/')
 def home():
-    return {
-        "message": "News Credibility Checker backend is running"
-    }
+    return jsonify({"message": "News Credibility Checker backend is running"})
 
+@app.route('/api/reports', methods=['POST'])
+def save_analysis():
+    data = request.json
+    try:
+        new_report = VerificationReport(
+            article_url=data.get('article_url'),
+            article_text=data.get('article_text'),
+            credibility_score=data.get('credibility_score', 0.0),
+            claim_extraction_data=data.get('claim_extraction_data'),
+            api_verification_data=data.get('api_verification_data')
+        )
+        report_id = repo.save_report(new_report)
+        return jsonify({"status": "success", "message": "Report stored successfully", "report_id": report_id}), 201
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
-@app.route("/analyze", methods=["POST"])
-def analyze_article():
-    data = request.get_json()
+@app.route('/api/history', methods=['GET'])
+def get_history():
+    try:
+        history = repo.get_all_reports()
+        return jsonify({"status": "success", "history": history}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
-    if not data:
-        return jsonify({
-            "error": "No data was submitted."
-        }), 400
-
-    input_type = data.get("inputType")
-    content = data.get("content", "").strip()
-
-    if not content:
-        return jsonify({
-            "error": "Please provide article text or a news article URL."
-        }), 400
-
-    # Placeholder results for the project skeleton.
-    # Group members will later replace this with real AI and API logic.
-    result = {
-        "inputType": input_type,
-        "credibilityScore": 75,
-        "claims": [
-            {
-                "claim": "This is a sample extracted claim.",
-                "status": "Supported",
-                "source": "https://example.com/source-one"
-            },
-            {
-                "claim": "This is another sample claim.",
-                "status": "Inconclusive",
-                "source": "https://example.com/source-two"
-            }
-        ]
-    }
-
-    return jsonify(result)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
