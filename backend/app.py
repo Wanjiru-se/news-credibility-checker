@@ -6,7 +6,6 @@ app = Flask(__name__)
 
 repo = ReportRepository()
 repo.create_table_if_not_exists()
-
 @app.route('/')
 def home():
     return jsonify({"message": "News Credibility Checker backend is running"})
